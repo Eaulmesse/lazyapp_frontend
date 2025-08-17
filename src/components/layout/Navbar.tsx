@@ -1,48 +1,156 @@
-import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuIndicator,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger,
-    NavigationMenuViewport,
-} from "@/components/ui/navigation-menu"
-import Link from "next/link"
+"use client";
+
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Zap, Menu, X, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
-    return (
-        <div className="bg-neutral-950 w-fit rounded-lg py-1 px-2">
-            <NavigationMenu>
-                <NavigationMenuList>
-                    <NavigationMenuItem>
-                        <NavigationMenuLink asChild className="text-white font-heading text-lg">
-                            <Link href="/">Home</Link>
-                        </NavigationMenuLink>
-                    </NavigationMenuItem>
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-                    <NavigationMenuItem>
-                        <NavigationMenuLink asChild className="text-white font-heading text-lg">
-                            <Link href="/">Fonctionnalités</Link>
-                        </NavigationMenuLink>
-                    </NavigationMenuItem>
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
 
-                    <NavigationMenuItem>
-                        <NavigationMenuLink asChild className="text-white font-heading text-lg">
-                            <Link href="/">Prix</Link>
-                        </NavigationMenuLink>
-                    </NavigationMenuItem>
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-                    <NavigationMenuItem>
-                        <NavigationMenuLink asChild className="text-white font-heading text-lg">
-                            <Link href="/">Contact</Link>
-                        </NavigationMenuLink>
-                    </NavigationMenuItem>
+  const navItems = [
+    { name: "Accueil", href: "#home" },
+    { name: "Comment ça marche", href: "#how-it-works" },
+    { name: "Fonctionnalités", href: "#features" },    
+  ];
 
-                    
-                </NavigationMenuList>
-            </NavigationMenu>
-        </div>
+  const handleNavClick = (href: string) => {
+    setIsMobileMenuOpen(false);
+    
+    // Scroll vers l'ancre avec offset pour la navbar
+    const element = document.querySelector(href);
+    if (element) {
+      const offset = 96; // Hauteur de la navbar + padding
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
+
+  return (
+    <>
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled 
+            ? "bg-black/80 backdrop-blur-md border-b border-gray-800/50" 
+            : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <motion.div 
+              className="flex items-center gap-2"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <span className="text-xl font-bold text-white">Velocity</span>
+              <Badge className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400 border-blue-500/30 text-xs">
+                Bêta
+              </Badge>
+            </motion.div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-8">
+              {navItems.map((item) => (
+                <motion.a
+                  key={item.name}
+                  href={item.href}
+                  className="text-gray-300 hover:text-white transition-colors font-medium"
+                  whileHover={{ y: -2 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  {item.name}
+                </motion.a>
+              ))}
+            </div>
+
+            {/* CTA Buttons */}
+            <a href="#waitlist" className="hidden md:flex items-center gap-4">
+              <Button 
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+              >
+                
+                Rejoindre la liste d'attente
+                <ArrowRight className="w-4 h-4" />
+                
+              </Button>
+            </a>
         
-    )
+            {/* Mobile Menu Button */}
+            <motion.button
+              className="md:hidden p-2 rounded-lg bg-gray-800/50 border border-gray-700"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-5 h-5 text-white" />
+              ) : (
+                <Menu className="w-5 h-5 text-white" />
+              )}
+            </motion.button>
+          </div>
+        </div>
+      </motion.nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="fixed top-16 left-0 right-0 z-40 bg-black/95 backdrop-blur-md border-b border-gray-800 md:hidden"
+          >
+            <div className="px-4 py-6 space-y-4">
+              {navItems.map((item, index) => (
+                <motion.button
+                  key={item.name}
+                  onClick={() => handleNavClick(item.href)}
+                  className="block w-full text-left text-gray-300 hover:text-white transition-colors font-medium py-2"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  {item.name}
+                </motion.button>
+              ))}
+              <a href="#waitlist" className="pt-4 border-t border-gray-800 space-y-3">
+                <Button 
+                  
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                > 
+                
+                Rejoindre la liste d'attente
+                <ArrowRight className="w-4 h-4 ml-2" />
+                
+                  
+                </Button>
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
 }

@@ -1,36 +1,167 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Velocity - Landing Page
 
-## Getting Started
+Une landing page moderne pour Velocity, un SaaS d'audits Lighthouse boostés par l'IA pour optimiser les performances web.
 
-First, run the development server:
+## 🚀 Fonctionnalités
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Landing Page
+- **Design moderne** avec thème clair et professionnel
+- **Navigation fixe** avec liens vers les sections principales
+- **Section Hero** avec call-to-action principal et waitlist
+- **Section Fonctionnalités** présentant les avantages de Velocity
+- **Section "Comment ça marche"** avec processus en 3 étapes
+- **Footer** complet avec liens utiles
+
+### Waitlist & Mesure du Besoin
+- **Formulaire d'inscription** interactif avec validation
+- **API route** pour gérer les inscriptions (`/api/waitlist`)
+- **Mesure du besoin** avec analytics intégrés
+- **Gestion des erreurs** et feedback utilisateur
+- **Accès prioritaire** pour les premiers inscrits
+
+### Composants UI
+- **Badge** - Pour les étiquettes et statuts
+- **Card** - Pour les sections de contenu
+- **Button** - Boutons avec différents variants
+- **Input** - Champs de saisie stylisés
+- **Navigation Menu** - Menu de navigation
+
+## 🛠️ Technologies
+
+- **Next.js 14** - Framework React
+- **TypeScript** - Typage statique
+- **Tailwind CSS** - Styling utilitaire
+- **shadcn/ui** - Composants UI modernes
+- **Lucide React** - Icônes
+- **class-variance-authority** - Variants de composants
+
+## 📁 Structure du projet
+
+```
+src/
+├── app/
+│   ├── api/
+│   │   └── waitlist/
+│   │       └── route.ts          # API pour la waitlist
+│   ├── dashboard/
+│   │   └── components/
+│   │       └── Input.tsx         # Composant d'audit existant
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx                  # Landing page principale
+├── components/
+│   ├── ui/                       # Composants shadcn/ui
+│   │   ├── badge.tsx
+│   │   ├── button.tsx
+│   │   ├── card.tsx
+│   │   ├── input.tsx
+│   │   └── navigation-menu.tsx
+│   ├── layout/
+│   │   └── Navbar.tsx
+│   └── WaitlistForm.tsx          # Formulaire de waitlist
+└── lib/
+    └── utils.ts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Cloner le projet**
+```bash
+git clone <repository-url>
+cd velocity_frontend
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Installer les dépendances**
+```bash
+npm install
+```
 
-## Learn More
+3. **Lancer le serveur de développement**
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. **Ouvrir dans le navigateur**
+```
+http://localhost:3000
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📊 Mesure du Besoin
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Métriques suivies
+- **Nombre total d'inscrits** à la waitlist
+- **Taux de conversion** visiteurs → inscrits
+- **Événements analytics** (inscriptions, clics)
 
-## Deploy on Vercel
+### API Endpoints
+- `POST /api/waitlist` - Inscription à la waitlist
+- `GET /api/waitlist` - Récupération des statistiques
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Analytics
+Le composant `WaitlistForm` inclut des événements Google Analytics pour mesurer le besoin :
+```javascript
+window.gtag('event', 'waitlist_signup', {
+  event_category: 'engagement',
+  event_label: 'landing_page',
+  value: 1
+});
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🎨 Personnalisation
+
+### Couleurs
+Les couleurs principales utilisées :
+- **Bleu** : `#3B82F6` (primary)
+- **Violet** : `#8B5CF6` (secondary)
+- **Vert** : `#10B981` (success)
+- **Rose** : `#EC4899` (accent)
+
+### Thème
+- **Mode clair** par défaut
+- **Design professionnel** et moderne
+- **Gradients** bleu-violet pour les CTA
+- **Ombres subtiles** et effets de hover
+
+## 📈 Optimisations SEO
+
+- **Meta tags** optimisés
+- **Structure sémantique** avec balises appropriées
+- **Images optimisées** avec Next.js Image
+- **Performance** optimisée avec Tailwind CSS
+
+## 🔧 Configuration
+
+### Variables d'environnement
+Créez un fichier `.env.local` :
+```env
+NEXT_PUBLIC_GA_ID=your-google-analytics-id
+NEXT_PUBLIC_SITE_URL=your-site-url
+```
+
+### Base de données
+Pour la production, remplacez la simulation en mémoire par une vraie base de données dans `/api/waitlist/route.ts`.
+
+## 📝 TODO
+
+- [ ] Intégration avec une vraie base de données
+- [ ] Système d'emails automatiques
+- [ ] Dashboard admin pour les statistiques
+- [ ] Tests unitaires et d'intégration
+- [ ] Optimisation des performances
+- [ ] Support multilingue
+
+## 🤝 Contribution
+
+1. Fork le projet
+2. Créer une branche feature (`git checkout -b feature/AmazingFeature`)
+3. Commit les changements (`git commit -m 'Add some AmazingFeature'`)
+4. Push vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrir une Pull Request
+
+## 📄 Licence
+
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+
+---
+
+**Velocity** - Optimisez vos performances web avec l'IA 🚀
