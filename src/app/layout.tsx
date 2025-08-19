@@ -2,8 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
-import PerformanceMonitor from "@/components/PerformanceMonitor";
+// import PerformanceMonitor from "@/components/PerformanceMonitor";
 import Script from "next/script";
+import { LazyMotion, domAnimation } from "framer-motion";
 
 // Optimisation des polices avec preload et display swap
 const inter = Inter({
@@ -204,10 +205,13 @@ export default function RootLayout({
         )}
         
         {/* Performance Monitor */}
-        <PerformanceMonitor />
+        {/* <PerformanceMonitor /> */}
         
-        <Navbar />
-        <main>{children}</main>
+        {/* Configuration Framer Motion optimisée pour l'hydratation */}
+        <LazyMotion features={domAnimation} strict>
+          <Navbar />
+          <main>{children}</main>
+        </LazyMotion>
       </body>
     </html>
   );

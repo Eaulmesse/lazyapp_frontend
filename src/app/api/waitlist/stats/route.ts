@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getWaitlistStats } from '@/lib/postgres';
+import { getWaitlistStats } from '@/lib/prisma-waitlist';
 
 export async function GET() {
   try {

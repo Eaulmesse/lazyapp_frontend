@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { addToWaitlist, getTotalSubscribers } from '@/lib/postgres';
+import { addToWaitlist, getTotalSubscribers } from '@/lib/prisma-waitlist';
 
 export async function POST(request: NextRequest) {
   try {

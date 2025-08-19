@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useClientOnly } from "@/lib/hooks/useHydration";
 import { Users, TrendingUp, Calendar, Star } from "lucide-react";
 
 interface WaitlistStats {
@@ -15,8 +16,11 @@ export default function WaitlistStats() {
   const [stats, setStats] = useState<WaitlistStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const isClient = useClientOnly();
 
   useEffect(() => {
+    if (!isClient) return;
+
     const fetchStats = async () => {
       try {
         const response = await fetch('/api/waitlist/stats');
@@ -33,9 +37,9 @@ export default function WaitlistStats() {
     };
 
     fetchStats();
-  }, []);
+  }, [isClient]);
 
-  if (loading) {
+  if (!isClient || loading) {
     return (
       <div className="text-center py-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>

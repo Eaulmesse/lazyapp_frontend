@@ -1,6 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
+import { useState, useEffect } from "react";
+import { useClientOnly } from "@/lib/hooks/useHydration";
 import { 
   Gauge, 
   TrendingUp, 
@@ -19,6 +21,8 @@ import {
 } from "lucide-react";
 
 export default function HeroDemo() {
+  const isClient = useClientOnly();
+
   const scores = [
     { name: "Performance", score: 92, color: "text-green-400", bgColor: "bg-green-500/20" },
     { name: "Accessibilité", score: 95, color: "text-green-400", bgColor: "bg-green-500/20" },
@@ -77,8 +81,16 @@ export default function HeroDemo() {
     }
   ];
 
+  if (!isClient) {
+    return (
+      <div className="relative max-w-4xl mx-auto mt-12">
+        <div className="bg-gray-900/80 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 shadow-2xl h-96 animate-pulse"></div>
+      </div>
+    );
+  }
+
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 1.2 }}
@@ -106,7 +118,7 @@ export default function HeroDemo() {
         {/* Scores Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           {scores.map((score, index) => (
-            <motion.div
+            <m.div
               key={score.name}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -117,7 +129,7 @@ export default function HeroDemo() {
                 {score.score}
               </div>
               <div className="text-gray-300 text-sm">{score.name}</div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
@@ -129,7 +141,7 @@ export default function HeroDemo() {
           </div>
           
           {recommendations.map((rec, index) => (
-            <motion.div
+            <m.div
               key={rec.title}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -152,12 +164,12 @@ export default function HeroDemo() {
                 </div>
                 <CheckCircle className="w-5 h-5 text-green-400 mt-1" />
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
         {/* Progress Bar */}
-        <motion.div
+        <m.div
           initial={{ width: 0 }}
           animate={{ width: "100%" }}
           transition={{ duration: 2, delay: 2.5 }}
@@ -168,17 +180,17 @@ export default function HeroDemo() {
             <span className="text-white font-semibold">90/100</span>
           </div>
           <div className="w-full bg-gray-700 rounded-full h-2">
-            <motion.div
+            <m.div
               initial={{ width: 0 }}
               animate={{ width: "90%" }}
               transition={{ duration: 1.5, delay: 2.7 }}
               className="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full"
             />
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Framework Detection */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 3 }}
@@ -190,7 +202,7 @@ export default function HeroDemo() {
           </div>
           <div className="flex flex-wrap gap-2">
             {["Next.js", "React", "TypeScript", "Tailwind CSS"].map((tech, index) => (
-              <motion.span
+              <m.span
                 key={tech}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -198,23 +210,23 @@ export default function HeroDemo() {
                 className="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded-md border border-blue-500/30"
               >
                 {tech}
-              </motion.span>
+              </m.span>
             ))}
           </div>
-        </motion.div>
+        </m.div>
       </div>
 
       {/* Floating Elements */}
-      <motion.div
+      <m.div
         animate={{ y: [0, -10, 0] }}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         className="absolute -top-4 -right-4 w-16 h-16 bg-blue-500/20 rounded-full blur-xl"
       />
-      <motion.div
+      <m.div
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         className="absolute -bottom-4 -left-4 w-20 h-20 bg-purple-500/20 rounded-full blur-xl"
       />
-    </motion.div>
+    </m.div>
   );
 }

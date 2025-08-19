@@ -2,22 +2,26 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { useClientOnly } from "@/lib/hooks/useHydration";
 import { Badge } from "@/components/ui/badge";
 import { Zap, Menu, X, ArrowRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isClient = useClientOnly();
 
   useEffect(() => {
+    if (!isClient) return;
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isClient]);
 
   const navItems = [
     { name: "Accueil", href: "#home" },
@@ -44,12 +48,12 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.nav
+      <m.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled 
+          isClient && isScrolled 
             ? "bg-black/80 backdrop-blur-md border-b border-gray-800/50" 
             : "bg-transparent"
         }`}
@@ -57,7 +61,7 @@ export default function Navbar() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <motion.div 
+            <m.div 
               className="flex items-center gap-2"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -66,12 +70,12 @@ export default function Navbar() {
               <Badge className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-400 border-blue-500/30 text-xs">
                 Bêta
               </Badge>
-            </motion.div>
+            </m.div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
               {navItems.map((item) => (
-                <motion.a
+                <m.a
                   key={item.name}
                   href={item.href}
                   className="text-gray-300 hover:text-white transition-colors font-medium"
@@ -79,7 +83,7 @@ export default function Navbar() {
                   transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 >
                   {item.name}
-                </motion.a>
+                </m.a>
               ))}
             </div>
 
@@ -96,7 +100,7 @@ export default function Navbar() {
             </a>
         
             {/* Mobile Menu Button */}
-            <motion.button
+            <m.button
               className="md:hidden p-2 rounded-lg bg-gray-800/50 border border-gray-700"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               whileHover={{ scale: 1.05 }}
@@ -107,15 +111,15 @@ export default function Navbar() {
               ) : (
                 <Menu className="w-5 h-5 text-white" />
               )}
-            </motion.button>
+            </m.button>
           </div>
         </div>
-      </motion.nav>
+      </m.nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
@@ -124,7 +128,7 @@ export default function Navbar() {
           >
             <div className="px-4 py-6 space-y-4">
               {navItems.map((item, index) => (
-                <motion.button
+                <m.button
                   key={item.name}
                   onClick={() => handleNavClick(item.href)}
                   className="block w-full text-left text-gray-300 hover:text-white transition-colors font-medium py-2"
@@ -133,7 +137,7 @@ export default function Navbar() {
                   transition={{ delay: index * 0.1 }}
                 >
                   {item.name}
-                </motion.button>
+                </m.button>
               ))}
               <a href="#waitlist" className="pt-4 border-t border-gray-800 space-y-3">
                 <Button 
@@ -148,7 +152,7 @@ export default function Navbar() {
                 </Button>
               </a>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>
