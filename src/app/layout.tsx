@@ -209,7 +209,6 @@ export default function RootLayout({
         
         {/* Configuration Framer Motion optimisée pour l'hydratation */}
         <LazyMotion features={domAnimation} strict>
-          <Navbar />
           <main>{children}</main>
         </LazyMotion>
       </body>

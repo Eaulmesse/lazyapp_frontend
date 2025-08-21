@@ -116,32 +116,32 @@
   * {
     @apply border-border outline-ring/50;
   }
-  
+
   html {
     scroll-behavior: smooth;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
-  
+
   /* Optimisations pour les images */
   img {
     max-width: 100%;
     height: auto;
     display: block;
   }
-  
+
   /* Optimisations pour les liens */
   a {
     text-decoration: none;
     transition: color 0.2s ease-in-out;
   }
-  
+
   /* Optimisations pour les boutons */
   button {
     cursor: pointer;
@@ -149,19 +149,19 @@
     background: none;
     font-family: inherit;
   }
-  
+
   /* Optimisations pour les inputs */
   input, textarea, select {
     font-family: inherit;
     font-size: inherit;
   }
-  
+
   /* Optimisations pour le focus */
   :focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
   }
-  
+
   /* Optimisations pour les animations réduites */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
